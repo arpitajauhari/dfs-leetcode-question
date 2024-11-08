@@ -1,0 +1,40 @@
+class Solution {
+public:
+    void dfs(vector<vector<int>>& grid, int i, int j, int& perimeter) {
+        // Boundary or water case - increase perimeter
+        if (i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size() || grid[i][j] == 0) {
+            perimeter++;
+            return;
+        }
+        
+        // If cell is already visited, skip it
+        if (grid[i][j] == -1) 
+            return;
+
+        // Mark the cell as visited
+        grid[i][j] = -1;
+
+        // DFS in four directions
+        dfs(grid, i - 1, j, perimeter);
+        dfs(grid, i + 1, j, perimeter);
+        dfs(grid, i, j - 1, perimeter);
+        dfs(grid, i, j + 1, perimeter);
+    }
+
+    int islandPerimeter(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        int perimeter = 0;
+
+        // Find the first land cell and start DFS
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    dfs(grid, i, j, perimeter);
+                    return perimeter; // No need to continue after finding one island
+                }
+            }
+        }
+        return perimeter;
+    }
+};
